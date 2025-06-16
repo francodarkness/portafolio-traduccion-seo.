@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Interactiva de SEO y Traducción para Restaurantes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    
+    <!-- 
+    The MIT License (MIT)
+    Copyright (c) 2025 Franco Villalobos
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+    -->
+    <!-- Chosen Palette: Earthy Elegance -->
+    <!-- Application Structure Plan: The application uses a persuasive "Problem -> Solution -> Action" narrative flow. It begins with the "Problem" section, using interactive, flippable cards to showcase the tangible cost of bad translations from the report's "Gallery of Errors." The "Solution" section then interactively demonstrates the value of professional copywriting by contrasting literal vs. persuasive descriptions from Table 1. Finally, the "Action" section provides a clear, actionable path forward with an interactive checklist derived from the report's 5-step blueprint (Table 2). This structure guides a potential client from understanding their pain point to seeing a clear, valuable solution, making the service offering feel indispensable. A seamless language toggle (ES/EN) is integrated throughout to demonstrate bilingual capability functionally. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: "Galería de Errores Comunes" -> Goal: Compare/Shock -> Viz: Interactive Flippable Cards (HTML/CSS/JS). Interaction: User clicks to reveal the "correct" professional translation. Justification: More engaging and memorable than a static list, making the problem feel immediate. Library: Vanilla JS.
+        - Report Info: "Tabla 1: La Matriz de Valor de la Traducción" -> Goal: Compare/Educate -> Viz: A styled, multi-column comparison layout. Interaction: Visual contrast between "cost" (red text) and "value" (green text). Justification: Clearly visualizes the ROI of professional translation by highlighting the value added. Method: Styled HTML.
+        - Report Info: "Tabla 2: El Checklist de Acción para el SEO Bilingüe" -> Goal: Organize/Action -> Viz: Interactive Accordion/Checklist (HTML/CSS/JS). Interaction: User clicks on each step to expand details. Justification: Makes the complex SEO plan digestible and actionable, empowering the user. Library: Vanilla JS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FBFBFB;
+            color: #1a1a1a;
+        }
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+        .bg-primary { background-color: #FBFBFB; }
+        .bg-secondary { background-color: #F3F4F6; }
+        .bg-accent { background-color: #C18C5D; }
+        .text-accent { color: #C18C5D; }
+        .text-dark { color: #1a1a1a; }
+        .text-light { color: #525252; }
+        .btn-primary {
+            background-color: #C18C5D;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #A9794E;
+        }
+        [data-lang-toggle] .active {
+            background-color: #C18C5D;
+            color: white;
+        }
+        .card-flipper {
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+        .card-container.flipped .card-flipper {
+            transform: rotateY(180deg);
+        }
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+        }
+        .card-back {
+            transform: rotateY(180deg);
+            background-color: #EBF5EE; /* A light green for the 'correct' side */
+        }
+        .checklist-item .details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .checklist-item.open .details {
+            max-height: 500px; 
+        }
+        .checklist-item.open .icon {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body class="bg-primary">
+
+    <header class="sticky top-0 z-50 bg-primary/80 backdrop-blur-md shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-accent font-serif" data-key="navTitle">GastroLingua</h1>
+            <div class="flex items-center space-x-4">
+                <div data-lang-toggle class="flex items-center border border-gray-300 rounded-full p-0.5 text-sm">
+                    <button data-lang="es" class="px-3 py-1 rounded-full active">ES</button>
+                    <button data-lang="en" class="px-3 py-1 rounded-full">EN</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6">
+        
+        <section class="text-center py-20 md:py-28">
+            <h2 class="text-4xl md:text-6xl font-bold text-dark font-serif mb-4" data-key="heroTitle"></h2>
+            <p class="max-w-3xl mx-auto text-lg text-light mb-8" data-key="heroSubtitle"></p>
+            <a href="#problem" class="btn-primary px-8 py-3 rounded-full font-semibold" data-key="heroCTA"></a>
+        </section>
+
+        <div class="max-w-5xl mx-auto">
+            <section id="problem" class="mb-20 md:mb-28">
+                <div class="text-center mb-12">
+                    <span class="text-accent font-semibold uppercase tracking-wider" data-key="problemSection"></span>
+                    <h3 class="text-3xl md:text-4xl font-bold mt-2 font-serif" data-key="problemTitle"></h3>
+                    <p class="max-w-3xl mx-auto mt-4 text-light" data-key="problemIntro"></p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="card-container relative h-56 bg-secondary rounded-lg shadow-md cursor-pointer" data-card-id="1">
+                        <div class="card-flipper relative w-full h-full">
+                            <div class="card-front rounded-lg">
+                                <p class="text-sm text-light" data-key="errorDish1"></p>
+                                <p class="text-2xl font-semibold text-red-600 text-center" data-key="errorTranslation1"></p>
+                                <span class="absolute bottom-4 text-xs text-accent font-semibold" data-key="clickToSee"></span>
+                            </div>
+                            <div class="card-back rounded-lg">
+                                <p class="text-sm text-light" data-key="errorDish1"></p>
+                                <p class="text-2xl font-semibold text-green-800 text-center" data-key="correctTranslation1"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-container relative h-56 bg-secondary rounded-lg shadow-md cursor-pointer" data-card-id="2">
+                         <div class="card-flipper relative w-full h-full">
+                            <div class="card-front rounded-lg">
+                                <p class="text-sm text-light" data-key="errorDish2"></p>
+                                <p class="text-2xl font-semibold text-red-600 text-center" data-key="errorTranslation2"></p>
+                                <span class="absolute bottom-4 text-xs text-accent font-semibold" data-key="clickToSee"></span>
+                            </div>
+                            <div class="card-back rounded-lg">
+                                <p class="text-sm text-light" data-key="errorDish2"></p>
+                                <p class="text-2xl font-semibold text-green-800 text-center" data-key="correctTranslation2"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-container relative h-56 bg-secondary rounded-lg shadow-md cursor-pointer" data-card-id="3">
+                         <div class="card-flipper relative w-full h-full">
+                            <div class="card-front rounded-lg">
+                                <p class="text-sm text-light" data-key="errorDish3"></p>
+                                <p class="text-2xl font-semibold text-red-600 text-center" data-key="errorTranslation3"></p>
+                                <span class="absolute bottom-4 text-xs text-accent font-semibold" data-key="clickToSee"></span>
+                            </div>
+                            <div class="card-back rounded-lg">
+                                <p class="text-sm text-light" data-key="errorDish3"></p>
+                                <p class="text-2xl font-semibold text-green-800 text-center" data-key="correctTranslation3"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="solution" class="mb-20 md:mb-28">
+                <div class="text-center mb-12">
+                    <span class="text-accent font-semibold uppercase tracking-wider" data-key="solutionSection"></span>
+                    <h3 class="text-3xl md:text-4xl font-bold mt-2 font-serif" data-key="solutionTitle"></h3>
+                    <p class="max-w-3xl mx-auto mt-4 text-light" data-key="solutionIntro"></p>
+                </div>
+                
+                <div class="bg-white rounded-lg p-6 md:p-8 border border-gray-200 shadow-sm">
+                    <div class="text-center mb-6">
+                        <p class="font-bold text-xl" data-key="originalDish"></p>
+                        <p class="text-2xl font-serif text-dark">Ropa Vieja</p>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-x-8 gap-y-6">
+                        <div class="p-4 border border-red-200 rounded-lg bg-red-50/50">
+                            <h5 class="font-semibold text-red-700" data-key="literalTranslationTitle"></h5>
+                            <p class="text-light mt-1" data-key="literalTranslationContent"></p>
+                        </div>
+                        <div class="p-4 border border-green-200 rounded-lg bg-green-50/50">
+                            <h5 class="font-semibold text-green-800" data-key="professionalTranslationTitle"></h5>
+                            <p class="text-light mt-1" data-key="professionalTranslationContent"></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="action-plan" class="mb-20 md:mb-28">
+                <div class="text-center mb-12">
+                    <span class="text-accent font-semibold uppercase tracking-wider" data-key="actionPlanSection"></span>
+                    <h3 class="text-3xl md:text-4xl font-bold mt-2 font-serif" data-key="actionPlanTitle"></h3>
+                    <p class="max-w-3xl mx-auto mt-4 text-light" data-key="actionPlanIntro"></p>
+                </div>
+
+                <div id="checklist-container" class="space-y-4">
+                    <!-- Checklist items will be injected here by JavaScript -->
+                </div>
+            </section>
+        
+            <section id="contact" class="text-center bg-secondary py-16 px-6 rounded-lg">
+                <h3 class="text-3xl font-bold font-serif mb-4" data-key="ctaTitle"></h3>
+                <p class="max-w-2xl mx-auto text-light mb-8" data-key="ctaSubtitle"></p>
+                <a href="https://www.fiverr.com/tu_usuario" target="_blank" rel="noopener noreferrer" class="btn-primary px-8 py-3 rounded-full font-bold inline-block" data-key="ctaButton"></a>
+            </section>
+        </div>
+    </main>
+
+    <footer class="mt-20 py-8">
+        <div class="text-center text-gray-500 text-sm">
+            <p data-key="footerText"></p>
+        </div>
+    </footer>
+    
+    <script>
+        const content = {
+            es: {
+                navTitle: "GastroLingua",
+                heroTitle: "Más Allá de la Traducción. Más Allá de las Fronteras.",
+                heroSubtitle: "Transforme su menú y su SEO para atraer clientes internacionales. Deje de perder mesas por culpa de una mala comunicación y empiece a llenar su restaurante con una estrategia global.",
+                heroCTA: "Descubra el Plan",
+                problemSection: "El Problema",
+                problemTitle: "El Alto Coste de una Mala Traducción",
+                problemIntro: "Un error en el menú no es solo una falta de ortografía. Es una señal de falta de profesionalidad que erosiona la confianza y le cuesta clientes. Vea algunos ejemplos reales.",
+                clickToSee: "Haga clic para corregir",
+                errorDish1: "Plato: Cocido Leonés",
+                errorTranslation1: "Cooked Lions",
+                correctTranslation1: "Traditional Stew from León",
+                errorDish2: "Plato: Pimientos con bonito",
+                errorTranslation2: "Peppers with beautiful",
+                correctTranslation2: "Peppers with White Tuna",
+                errorDish3: "Plato: Pulpo a Feira",
+                errorTranslation3: "Octopus to the Party",
+                correctTranslation3: "Galician-Style Octopus",
+                solutionSection: "La Solución",
+                solutionTitle: "El Arte de la Seducción Gastronómica",
+                solutionIntro: "Una traducción experta no solo es correcta, es persuasiva. Transforma su menú en una poderosa herramienta de ventas que evoca los sentidos, cuenta una historia y justifica sus precios.",
+                originalDish: "Plato Original",
+                literalTranslationTitle: "Traducción Literal (El Coste)",
+                literalTranslationContent: "'Old Clothes' (Ropa vieja). Poco apetitoso, confuso, suena a broma. Genera desconfianza en la calidad del plato y del restaurante.",
+                professionalTranslationTitle: "Traducción Profesional (El Valor)",
+                professionalTranslationContent: "'Ternera Desmechada al Estilo Cubano'. Falda de ternera cocida a fuego lento en una rica salsa de tomate, pimientos y cebolla. Apetitoso, informativo y evoca autenticidad.",
+                actionPlanSection: "Su Plan de Acción",
+                actionPlanTitle: "Su Hoja de Ruta Hacia el Éxito Internacional",
+                actionPlanIntro: "Esta es la estrategia que fusiona la traducción experta con el SEO para poner su restaurante en el mapa mundial. Siga estos pasos para dominar la búsqueda internacional.",
+                checklist: [
+                    { title: "Optimizar su Perfil de Empresa en Google (GBP)", details: "Es su herramienta nº1 para atraer búsquedas 'cerca de mí' de turistas. Un perfil completo con menú multilingüe y reseñas activas dispara su ranking." },
+                    { title: "Convertir menús de PDF a páginas web (HTML)", details: "Los PDF son invisibles para Google y frustrantes para los móviles. El texto HTML es legible por los buscadores y accesible para todos, mejorando el SEO." },
+                    { title: "Crear Títulos y Descripciones SEO para cada idioma", details: "Son su 'anuncio' gratuito en Google. Un buen título y descripción aumentan los clics y atraen tráfico cualificado." },
+                    { title: "Contratar a un traductor gastronómico profesional", details: "Una traducción experta transforma el menú en una herramienta de ventas, justifica precios más altos y conduce a mejores reseñas online." },
+                    { title: "Implementar SEO Técnico (Schema & Hreflang)", details: "Ayuda a Google a entender su menú para mostrar resultados enriquecidos (con fotos, precios) y dirigir a los usuarios al idioma correcto." }
+                ],
+                ctaTitle: "¿Listo para Abrir sus Puertas al Mundo?",
+                ctaSubtitle: "Una estrategia de comunicación global es la inversión más rentable para el crecimiento de su restaurante. Encuéntreme en Fiverr para dar el primer paso.",
+                ctaButton: "Ver mi Perfil en Fiverr",
+                footerText: "© 2025 Franco Villalobos | Código liberado bajo la Licencia MIT."
+            },
+            en: {
+                navTitle: "GastroLingua",
+                heroTitle: "Beyond Translation. Beyond Borders.",
+                heroSubtitle: "Transform your menu and SEO to attract international customers. Stop losing tables to poor communication and start filling your restaurant with a global strategy.",
+                heroCTA: "Discover the Blueprint",
+                problemSection: "The Problem",
+                problemTitle: "The High Cost of Poor Translation",
+                problemIntro: "A menu error isn't just a typo. It's a sign of unprofessionalism that erodes trust and costs you customers. See some real-world examples.",
+                clickToSee: "Click to fix",
+                errorDish1: "Dish: Cocido Leonés",
+                errorTranslation1: "Cooked Lions",
+                correctTranslation1: "Traditional Stew from León",
+                errorDish2: "Dish: Pimientos con bonito",
+                errorTranslation2: "Peppers with beautiful",
+                correctTranslation2: "Peppers with White Tuna",
+                errorDish3: "Dish: Pulpo a Feira",
+                errorTranslation3: "Octopus to the Party",
+                correctTranslation3: "Galician-Style Octopus",
+                solutionSection: "The Solution",
+                solutionTitle: "The Art of Gastronomic Seduction",
+                solutionIntro: "An expert translation isn't just correct; it's persuasive. It transforms your menu into a powerful sales tool that evokes the senses, tells a story, and justifies your prices.",
+                originalDish: "Original Dish",
+                literalTranslationTitle: "Literal Translation (The Cost)",
+                literalTranslationContent: "'Old Clothes'. Unappetizing, confusing, sounds like a joke. It creates distrust in the quality of the dish and the restaurant.",
+                professionalTranslationTitle: "Professional Translation (The Value)",
+                professionalTranslationContent: "'Cuban-Style Shredded Beef'. Slow-braised flank steak in a rich tomato, pepper, and onion sauce. Appetizing, informative, and evokes authenticity.",
+                actionPlanSection: "Your Action Plan",
+                actionPlanTitle: "Your Roadmap to International Success",
+                actionPlanIntro: "This is the strategy that merges expert translation with SEO to put your restaurant on the world map. Follow these steps to dominate the international search.",
+                checklist: [
+                    { title: "Optimize Your Google Business Profile (GBP)", details: "It's your #1 tool for attracting 'near me' searches from tourists. A complete profile with a multilingual menu and active reviews skyrockets your ranking." },
+                    { title: "Convert PDF Menus to Web Pages (HTML)", details: "PDFs are invisible to Google and frustrating on mobile. HTML text is readable by search engines and accessible to all, improving SEO." },
+                    { title: "Create SEO Titles & Descriptions for Each Language", details: "They are your free 'advertisement' on Google. A good title and description increase clicks and attract qualified traffic." },
+                    { title: "Hire a Professional Gastronomic Translator", details: "Expert translation turns the menu into a sales tool, justifies higher prices, and leads to better online reviews." },
+                    { title: "Implement Technical SEO (Schema & Hreflang)", details: "This helps Google understand your menu to show rich results (with photos, prices) and direct users to the correct language." }
+                ],
+                ctaTitle: "Ready to Open Your Doors to the World?",
+                ctaSubtitle: "A global communication strategy is the most profitable investment for your restaurant's growth. Find me on Fiverr to take the first step.",
+                ctaButton: "View my Fiverr Profile",
+                footerText: "© 2025 Franco Villalobos | Code released under the MIT License."
+            }
+        };
+
+        let currentLanguage = 'es';
+
+        function updateContent() {
+            const langContent = content[currentLanguage];
+            document.documentElement.lang = currentLanguage;
+            document.querySelectorAll('[data-key]').forEach(el => {
+                const key = el.dataset.key;
+                if (langContent[key]) {
+                    el.innerHTML = langContent[key];
+                }
+            });
+
+            const checklistContainer = document.getElementById('checklist-container');
+            checklistContainer.innerHTML = '';
+            langContent.checklist.forEach((item, index) => {
+                const itemEl = document.createElement('div');
+                itemEl.classList.add('checklist-item', 'bg-white', 'rounded-lg', 'border', 'border-gray-200', 'shadow-sm');
+                itemEl.innerHTML = `
+                    <div class="header p-4 cursor-pointer flex justify-between items-center">
+                        <h5 class="font-semibold text-dark">${item.title}</h5>
+                        <div class="icon text-accent transition-transform duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </div>
+                    </div>
+                    <div class="details px-4">
+                        <p class="pb-4 text-light">${item.details}</p>
+                    </div>
+                `;
+                checklistContainer.appendChild(itemEl);
+            });
+
+            document.querySelectorAll('.checklist-item .header').forEach(header => {
+                header.addEventListener('click', () => {
+                    header.parentElement.classList.toggle('open');
+                });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateContent();
+
+            document.querySelector('[data-lang-toggle]').addEventListener('click', (e) => {
+                if (e.target.tagName === 'BUTTON') {
+                    currentLanguage = e.target.dataset.lang;
+                    document.querySelectorAll('[data-lang-toggle] button').forEach(btn => btn.classList.remove('active'));
+                    e.target.classList.add('active');
+                    updateContent();
+                }
+            });
+            
+            document.querySelectorAll('.card-container').forEach(card => {
+                card.addEventListener('click', () => {
+                    card.classList.toggle('flipped');
+                });
+            });
+            
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
